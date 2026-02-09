@@ -1,14 +1,21 @@
 import { prisma } from "./prisma";
-
-const DEFAULT_USER_EMAIL = "owner@hobbies.local";
+import { auth } from "../auth";
+import { redirect } from "next/navigation";
 
 export async function getCurrentUserId() {
+  const session = await auth();
+  const email = session?.user?.email;
+
+  if (!email) {
+    redirect("/login");
+  }
+
   const user = await prisma.user.upsert({
-    where: { email: DEFAULT_USER_EMAIL },
+    where: { email },
     update: {},
     create: {
-      email: DEFAULT_USER_EMAIL,
-      name: "Owner"
+      email,
+      name: session.user.name || email.split("@")[0]
     },
     select: { id: true }
   });

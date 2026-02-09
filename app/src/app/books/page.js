@@ -6,20 +6,74 @@ import { createBook, deleteBook, updateBook } from "./actions";
 export const dynamic = "force-dynamic";
 
 const statusOptions = [
+  { value: "ALL", label: "All statuses" },
   { value: "WANT_TO_READ", label: "Want to read" },
   { value: "READING", label: "Reading" },
   { value: "COMPLETED", label: "Completed" }
+];
+
+const sortOptions = [
+  { value: "updated_desc", label: "Recently updated" },
+  { value: "created_desc", label: "Recently added" },
+  { value: "title_asc", label: "Title A-Z" },
+  { value: "rating_desc", label: "Top rated" }
 ];
 
 function statusLabel(status) {
   return statusOptions.find((option) => option.value === status)?.label || status;
 }
 
-export default async function BooksPage() {
+function dateInputValue(value) {
+  return value ? value.toISOString().slice(0, 10) : "";
+}
+
+function readParam(value) {
+  return typeof value === "string" ? value : "";
+}
+
+function resolveSort(sort) {
+  if (sort === "created_desc") {
+    return { createdAt: "desc" };
+  }
+
+  if (sort === "title_asc") {
+    return { title: "asc" };
+  }
+
+  if (sort === "rating_desc") {
+    return [{ rating: "desc" }, { updatedAt: "desc" }];
+  }
+
+  return { updatedAt: "desc" };
+}
+
+export default async function BooksPage({ searchParams }) {
   const userId = await getCurrentUserId();
+  const query = readParam(searchParams?.q).trim();
+  const selectedStatus = readParam(searchParams?.status);
+  const selectedSort = readParam(searchParams?.sort);
+  const statusFilter = statusOptions.some((option) => option.value === selectedStatus)
+    ? selectedStatus
+    : "ALL";
+  const sort = sortOptions.some((option) => option.value === selectedSort) ? selectedSort : "updated_desc";
+
+  const where = {
+    userId,
+    ...(statusFilter !== "ALL" ? { status: statusFilter } : {}),
+    ...(query
+      ? {
+          OR: [
+            { title: { contains: query, mode: "insensitive" } },
+            { author: { contains: query, mode: "insensitive" } },
+            { notes: { contains: query, mode: "insensitive" } }
+          ]
+        }
+      : {})
+  };
+
   const books = await prisma.book.findMany({
-    where: { userId },
-    orderBy: { updatedAt: "desc" }
+    where,
+    orderBy: resolveSort(sort)
   });
 
   const totals = books.reduce(
@@ -69,20 +123,50 @@ export default async function BooksPage() {
           <input name="title" type="text" placeholder="Title" required />
           <input name="author" type="text" placeholder="Author" />
           <select name="status" defaultValue="WANT_TO_READ">
+            {statusOptions
+              .filter((option) => option.value !== "ALL")
+              .map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+              ))}
+          </select>
+          <input name="totalPages" type="number" min="1" placeholder="Total pages" />
+          <input name="currentPage" type="number" min="0" placeholder="Current page" />
+          <input name="rating" type="number" min="1" max="5" placeholder="Rating (1-5)" />
+          <input name="startedAt" type="date" />
+          <input name="finishedAt" type="date" />
+          <textarea name="notes" placeholder="Notes" rows={2} />
+          <button type="submit">Save book</button>
+        </form>
+      </section>
+
+      <section className="card" aria-label="Filter books">
+        <form className="book-form">
+          <input type="search" name="q" defaultValue={query} placeholder="Search title, author, notes" />
+          <select name="status" defaultValue={statusFilter}>
             {statusOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
           </select>
-          <input name="totalPages" type="number" min="1" placeholder="Total pages" />
-          <input name="currentPage" type="number" min="0" placeholder="Current page" />
-          <input name="rating" type="number" min="1" max="5" placeholder="Rating (1-5)" />
-          <button type="submit">Save book</button>
+          <select name="sort" defaultValue={sort}>
+            {sortOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <button type="submit">Apply</button>
+          <Link href="/books" className="text-link">
+            Reset
+          </Link>
         </form>
       </section>
 
       <section className="grid" aria-label="Books list">
+        {books.length === 0 ? <p className="empty-state">No books match this filter yet.</p> : null}
         {books.map((book) => {
           const updateAction = updateBook.bind(null, book.id);
           const removeAction = deleteBook.bind(null, book.id);
@@ -98,11 +182,13 @@ export default async function BooksPage() {
                 <input name="title" type="text" defaultValue={book.title} required />
                 <input name="author" type="text" defaultValue={book.author || ""} placeholder="Author" />
                 <select name="status" defaultValue={book.status}>
-                  {statusOptions.map((option) => (
+                  {statusOptions
+                    .filter((option) => option.value !== "ALL")
+                    .map((option) => (
                     <option key={option.value} value={option.value}>
                       {option.label}
                     </option>
-                  ))}
+                    ))}
                 </select>
                 <input
                   name="totalPages"
@@ -126,6 +212,9 @@ export default async function BooksPage() {
                   defaultValue={book.rating || ""}
                   placeholder="Rating"
                 />
+                <input name="startedAt" type="date" defaultValue={dateInputValue(book.startedAt)} />
+                <input name="finishedAt" type="date" defaultValue={dateInputValue(book.finishedAt)} />
+                <textarea name="notes" defaultValue={book.notes || ""} rows={2} placeholder="Notes" />
                 <div className="form-actions">
                   <button type="submit">Update</button>
                   <button type="submit" formAction={removeAction} className="button-muted">

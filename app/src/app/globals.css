@@ -19,6 +19,46 @@ body {
   color: var(--ink);
 }
 
+.topbar {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand-link {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.auth-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.user-chip {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #fff8ea;
+}
+
+.button-link {
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  text-decoration: none;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .page {
   max-width: 1040px;
   margin: 0 auto;
@@ -135,6 +175,7 @@ h1 {
 
 .book-form input,
 .book-form select,
+.book-form textarea,
 .book-form button {
   width: 100%;
   border-radius: 10px;
@@ -151,6 +192,11 @@ h1 {
   color: #fff;
   font-weight: 700;
   cursor: pointer;
+}
+
+.book-form textarea {
+  resize: vertical;
+  min-height: 2.6rem;
 }
 
 .book-form .button-muted {
@@ -193,4 +239,24 @@ h1 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.55rem;
+}
+
+.empty-state {
+  margin: 0;
+  color: var(--muted);
+}
+
+.auth-page {
+  display: grid;
+  min-height: calc(100vh - 80px);
+  place-items: center;
+}
+
+.auth-card {
+  width: min(520px, 100%);
+}
+
+.auth-form {
+  margin-top: 1rem;
+  grid-template-columns: 1fr auto;
 }
