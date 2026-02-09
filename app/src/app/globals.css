@@ -1,0 +1,73 @@
+:root {
+  color-scheme: light;
+  --bg: #f4f0e8;
+  --panel: #fff8ea;
+  --ink: #2f2418;
+  --muted: #6a5846;
+  --accent: #b65c2a;
+  --border: #e5d8c5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  background: radial-gradient(circle at 0 0, #fff9ef 0, var(--bg) 50%, #eee4d4 100%);
+  color: var(--ink);
+}
+
+.page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+h1 {
+  margin: 0.4rem 0;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+}
+
+.subtitle {
+  margin: 0 auto;
+  max-width: 50ch;
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 8px 24px rgba(95, 72, 43, 0.08);
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+.card p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
