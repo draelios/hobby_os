@@ -1,15 +1,20 @@
+import Link from "next/link";
+
 const modules = [
   {
     title: "Books",
-    description: "Track reading status, notes, ratings, and goals."
+    description: "Track reading status, notes, ratings, and goals.",
+    href: "/books"
   },
   {
     title: "Recipes",
-    description: "Save recipes, plan meals, and generate shopping lists."
+    description: "Save recipes, plan meals, and generate shopping lists.",
+    href: "#"
   },
   {
     title: "Finances",
-    description: "Track income, expenses, budgets, and recurring payments."
+    description: "Track income, expenses, budgets, and recurring payments.",
+    href: "#"
   }
 ];
 
@@ -29,6 +34,9 @@ export default function HomePage() {
           <article key={item.title} className="card">
             <h2>{item.title}</h2>
             <p>{item.description}</p>
+            <Link className="text-link" href={item.href}>
+              Open module
+            </Link>
           </article>
         ))}
       </section>

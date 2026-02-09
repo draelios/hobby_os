@@ -6,7 +6,7 @@ Bootstrap a working self-hosted baseline with app shell, database wiring, and de
 
 ## Checklist
 
-- [ ] Copy `.env.example` to `.env`
+- [ ] Verify `.env` contains secure auth and database secrets
 - [ ] Set secure `NEXTAUTH_SECRET` and strong database password
 - [ ] Build and start stack with `docker compose up --build -d`
 - [ ] Confirm containers are healthy with `docker compose ps`

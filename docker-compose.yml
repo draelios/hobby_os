@@ -15,9 +15,11 @@ services:
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
     expose:
       - "3000"
+    ports:
+      - "${APP_PORT:-3000}:3000"
     volumes:
       - uploads_data:/app/uploads
-    command: sh -c "npx prisma migrate deploy && npm run start"
+    command: sh -c "npx prisma db push && npm run start"
     restart: unless-stopped
 
   db:
@@ -61,6 +63,7 @@ services:
     depends_on:
       - web
     environment:
+      APP_BASE_URL: ${APP_BASE_URL:-https://hobbies.local}
       APP_DOMAIN: ${APP_DOMAIN:-hobbies.local}
     ports:
       - "80:80"

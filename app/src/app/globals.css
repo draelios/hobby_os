@@ -71,3 +71,126 @@ h1 {
   margin-bottom: 0;
   color: var(--muted);
 }
+
+.text-link {
+  display: inline-block;
+  margin-top: 0.85rem;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
+.hero-left {
+  text-align: left;
+}
+
+.hero-actions {
+  margin-top: 0.75rem;
+}
+
+.books-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.75rem;
+}
+
+.stat-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.stat-card strong {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1.4rem;
+}
+
+.book-form-card h2 {
+  margin-top: 0;
+}
+
+.book-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.65rem;
+  align-items: end;
+}
+
+.book-form input,
+.book-form select,
+.book-form button {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fffcf5;
+  color: var(--ink);
+  font: inherit;
+  padding: 0.55rem 0.65rem;
+}
+
+.book-form button {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.book-form .button-muted {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--ink);
+}
+
+.book-card {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.book-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.book-card-head h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.status-pill {
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: #f4e3d4;
+  color: #8a461f;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.book-form.compact {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.form-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+}

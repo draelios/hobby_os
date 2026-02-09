@@ -11,9 +11,7 @@ A local-server app to manage books, cooking recipes, and personal finances in on
 
 ## Quick Start
 
-1. Copy env template:
-   - `cp .env.example .env`
-2. Update secrets and domain values in `.env`
+1. Update secrets and domain values in `.env`
 3. Add local DNS/hosts entry for your app domain (for example `hobbies.local`)
 4. Start stack:
    - `docker compose up --build -d`
@@ -24,9 +22,7 @@ A local-server app to manage books, cooking recipes, and personal finances in on
 
 Use this when you just want to run and test quickly on your machine.
 
-1. Copy env template:
-   - `cp .env.example .env`
-2. Start with localhost override:
+1. Start with localhost override:
    - `docker compose -f docker-compose.yml -f docker-compose.local.yml up --build -d`
 3. Open:
    - `http://localhost:3000`
